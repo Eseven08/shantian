@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>雪の約束 - Key風短篇</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0f1419;
+      color: #e6e9ed;
+      font-family: "Noto Sans SC", "微软雅黑", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 8px;
+    }
+
+    /* 游戏主容器 - 模拟GAL窗口 */
+    .game-window {
+      width: 100%;
+      max-width: 800px;
+      height: 95vh;
+      max-height: 600px;
+      background: #1a2026;
+      border-radius: 4px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.7);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid #2d3741;
+    }
+
+    /* 立绘区域 */
+    .character-layer {
+      flex: 1;
+      position: relative;
+      background: linear-gradient(to bottom, #101820, #1a2026);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 10px;
+    }
+
+    .character-img {
+      max-height: 90%;
+      max-width: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 15px rgba(100, 150, 200, 0.3));
+    }
+
+    /* 文本框区域 - 经典GAL对话框 */
+    .text-box {
+      height: 180px;
+      background: rgba(15, 20, 26, 0.92);
+      border-top: 2px solid #334155;
+      padding: 18px 22px;
+      position: relative;
+    }
+
+    .name-tag {
+      color: #a5d8ff;
+      font-weight: 600;
+      font-size: 17px;
+      margin-bottom: 8px;
+      padding-left: 4px;
+      border-left: 3px solid #4dabf7;
+    }
+
+    .dialogue {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #e2e8f0;
+      min-height: 80px;
+    }
+
+    /* 按钮组 */
+    .control-bar {
+      display: flex;
+      gap: 10px;
+      padding: 12px 22px;
+      background: #151a20;
+      border-top: 1px solid #2d3741;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #334155;
+      border-radius: 3px;
+      background: #1e293b;
+      color: #cbd5e1;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background: #2d3741;
+      color: #e2e8f0;
+      border-color: #4dabf7;
+    }
+
+    /* 场景切换淡入效果 */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .fade-in {
+      animation: fadeIn 0.6s ease forwards;
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-window">
+  <!-- 立绘层 -->
+  <div class="character-layer">
+    <img class="character-img fade-in" id="chara" 
+         src="https://picsum.photos/id/237/600/800" 
+         alt="雪野 雫">
+  </div>
+
+  <!-- 文本框 -->
+  <div class="text-box">
+    <div class="name-tag" id="charName">雪野 雫</div>
+    <div class="dialogue" id="dialogue">……你终于来了。</div>
+  </div>
+
+  <!-- 操作栏 -->
+  <div class="control-bar">
+    <button onclick="nextLine()">▶ 继续</button>
+    <button onclick="choiceStay()">♡ 留下来陪她</button>
+    <button onclick="choiceLeave()">✧ 先回家吧</button>
+  </div>
+</div>
+
+<script>
+  let step = 0;
+  const charName = document.getElementById("charName");
+  const dialogue = document.getElementById("dialogue");
+  const chara = document.getElementById("chara");
+
+  // 重置立绘淡入效果
+  function resetFade() {
+    chara.classList.remove("fade-in");
+    void chara.offsetWidth; // 触发重绘
+    chara.classList.add("fade-in");
+  }
+
+  // 主线剧情推进
+  function nextLine() {
+    step++;
+    switch(step) {
+      case 1:
+        charName.textContent = "雪野 雫";
+        dialogue.textContent = "今天的雪，下得好温柔呢……就像要把整个世界都抱起来一样。";
+        resetFade();
+        break;
+      case 2:
+        charName.textContent = "雪野 雫";
+        dialogue.textContent = "我一直在等，等一个愿意在雪夜里，听我讲完那些快要被遗忘的故事的人。";
+        break;
+      case 3:
+        charName.textContent = "雪野 雫";
+        dialogue.textContent = "你……会陪我到雪停的那一刻吗？";
+        break;
+      default:
+        dialogue.textContent = "【剧情暂停 · 请做出选择】";
+    }
+  }
+
+  // 选择1：留下来（True End - Key社催泪向）
+  function choiceStay() {
+    charName.textContent = "雪野 雫";
+    dialogue.textContent = "（指尖轻轻触碰到你的手背，温度带着雪的凉意）……谢谢你。这是我见过，最温暖的一场雪。";
+    chara.src = "https://picsum.photos/id/240/600/800";
+    resetFade();
+    setTimeout(() => {
+      dialogue.textContent = "【TRUE END · 雪の約束】—— 这个冬天，我们再也不会孤单了。";
+    }, 2500);
+  }
+
+  // 选择2：先回家（Normal End - 温柔遗憾）
+  function choiceLeave() {
+    charName.textContent = "雪野 雫";
+    dialogue.textContent = "（垂下眼帘，睫毛上沾着细碎的雪粒）……嗯，路上小心。我会在这里，等下一场雪，也等你回来。";
+    chara.src = "https://picsum.photos/id/239/600/800";
+    resetFade();
+    setTimeout(() => {
+      dialogue.textContent = "【NORMAL END · 雪の記憶】—— 有些约定，会在春天到来之前，悄悄发芽。";
+    }, 2500);
+  }
+</script>
+</body>
+</html>
