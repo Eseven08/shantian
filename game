@@ -1,0 +1,28 @@
+# 游戏主入口
+# 2D 冒险游戏核心框架
+
+class GameMain:
+    def __init__(self):
+        self.game_running = False
+        self.screen_width = 800
+        self.screen_height = 600
+
+    def init(self):
+        """初始化游戏"""
+        self.game_running = True
+        print("✅ 游戏初始化成功")
+        print(f"📺 分辨率: {self.screen_width}x{self.screen_height}")
+
+    def start(self):
+        """启动游戏"""
+        self.init()
+        print("🎮 游戏已启动")
+
+    def stop(self):
+        """停止游戏"""
+        self.game_running = False
+        print("🛑 游戏已停止")
+
+if __name__ == "__main__":
+    game = GameMain()
+    game.start()
